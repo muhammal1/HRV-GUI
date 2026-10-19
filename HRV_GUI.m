@@ -224,7 +224,7 @@ function detectPeaks(~,~)
     N=length(y); t=(0:N-1)/Fs;
     [p,~,mu]=polyfit((1:numel(y))',y,6);
     fy=polyval(p,(1:numel(y))',[],mu);
-    ECG=lowpass(y-fy,4,Fs);
+    ECG=lowpass(y-fy,40,Fs);
     [peak_val,peak_loc]=findpeaks(ECG,'MinPeakHeight',peak_th,'MinPeakDistance',peak_dis);
     hECG = plot(ax,t,ECG,'b');
 set(hECG,'HitTest','off')   % allow axis to receive mouse clicks 
