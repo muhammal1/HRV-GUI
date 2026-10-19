@@ -315,7 +315,7 @@ end
 
 xq = x(1):1000/Fs_interp:x(end);
 RR1 = interp1(x,RR,xq,'pchip');
-    RR1=interp1(x,RR,xq,'pchip');
+    
     [Pxx,F]=periodogram(RR1,hamming(length(RR1)),length(RR1),Fs_interp);
     HF=bandpower(Pxx,F,HF_band,'psd'); LF=bandpower(Pxx,F,LF_band,'psd');
     LFHFratio=LF/HF; LFn=LF/(LF+HF); HFn=HF/(LF+HF); nRatio=LFn/HFn; RSA=log(HF);
