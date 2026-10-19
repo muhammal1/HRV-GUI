@@ -271,19 +271,50 @@ function computeMetrics(~,~)
     if strcmp(studytype,'Human'), edges=0.5:0.05:1.8; else, edges=0:0.015:0.5; end
     counts=histcounts(RR_sec,edges); n1=max(counts); N1=length(RR_sec); AMo=n1/N1; MxDMn=max(RR_sec)-min(RR_sec); SI=(AMo*100)/(2*Mo*MxDMn);
 
-    % SDANN & SDNN Index
-    seg=floor(length(RR)/5); ind=[]; ind2=[];
-    for j=1:seg, segment=RR((j-1)*5+1:j*5); ind(j)=std(segment); ind2(j)=mean(segment); end
-    SDANN=std(ind2); SDNN_Index=mean(ind);
+       
+% SDANN & SDNN Index (5-minute segments)
+segmentDuration = 5*60*1000; % milliseconds
+tRR = [0; cumsum(RR(1:end-1))];
+nSeg = floor(sum(RR)/segmentDuration);
+
+segMean = [];
+segSD = [];
+
+for j = 1:nSeg
+    idx = tRR >= (j-1)*segmentDuration & ...
+          tRR < j*segmentDuration;
+    segment = RR(idx);
+
+    if numel(segment) > 1
+        segMean(end+1) = mean(segment);
+        segSD(end+1) = std(segment);
+    end
+end
+
+if numel(segMean) >= 2
+    SDANN = std(segMean);
+    SDNN_Index = mean(segSD);
+else
+    SDANN = NaN;
+    SDNN_Index = NaN;
+end
+
 
     % Frequency Analysis
     n=length(RR); x=zeros(1,n); x(1)=RR(1);
     for i=1:n-1, x(i+1)=x(i)+RR(i+1); end
     if strcmp(studytype,'Human')
-        xq=1:272:x(end); Fs_interp=10; LF_band=[0.04 0.15]; HF_band=[0.15 0.5];
-    else
-        xq=1:500:x(end); Fs_interp=20; LF_band=[0.2 0.8]; HF_band=[0.8 3];
-    end
+    Fs_interp = 10;
+    LF_band = [0.04 0.15];
+    HF_band = [0.15 0.5];
+else
+    Fs_interp = 20;
+    LF_band = [0.2 0.8];
+    HF_band = [0.8 3];
+end
+
+xq = x(1):1000/Fs_interp:x(end);
+RR1 = interp1(x,RR,xq,'pchip');
     RR1=interp1(x,RR,xq,'pchip');
     [Pxx,F]=periodogram(RR1,hamming(length(RR1)),length(RR1),Fs_interp);
     HF=bandpower(Pxx,F,HF_band,'psd'); LF=bandpower(Pxx,F,LF_band,'psd');
