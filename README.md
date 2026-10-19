@@ -33,12 +33,25 @@ The software includes the following measures:
 
 **Nonlinear and additional measures:** SD1, SD2, SD2/SD1, and stress index.
 
-## Requirements
+## MATLAB Requirements
 
-- MATLAB
-- MATLAB Signal Processing Toolbox
+HRV-GUI requires the following MathWorks products:
 
-Compatibility with specific MATLAB releases is being documented.
+- **MATLAB** – For the graphical user interface, data processing, visualization, and file management.
+- **Signal Processing Toolbox** – For ECG filtering, automated R-peak detection, signal resampling, power spectral density estimation, and frequency-domain HRV analysis.
+
+No additional MathWorks toolboxes are required by the current implementation.
+
+**MATLAB compatibility:** The source code uses functions introduced by MATLAB R2018b. Compatibility with specific MATLAB releases should be confirmed through testing.
+
+**Input formats:**
+- ECG recordings: WAV (`.wav`)
+- RR interval recordings: Excel (`.xlsx`), with a column named `RR_ms`
+
+**Output formats:**
+- HRV analysis results: Excel (`.xlsx`)
+- RR interval data: Excel (`.xlsx`)
+- Saved analysis sessions: MATLAB (`.mat`)
 
 ## Installation and Usage
 
