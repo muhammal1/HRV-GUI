@@ -82,7 +82,3 @@ It is intended for research purposes and is not a clinical diagnostic tool.
 
 Citation information will be updated following publication of the accompanying HRV-GUI manuscript.
 
-## License
-
-Software distribution and licensing information will be provided following institutional review and approval.# HRV-GUI
-MATLAB-based GUI for ECG-derived heart rate variability analysis in preclinical and clinical research
